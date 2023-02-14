@@ -10,7 +10,7 @@ Please go to the [Anaconda website](https://www.anaconda.com/).
 Download and install *the latest* Anaconda version for latest *Python* for your operating system.
 
 
-## Check-out the git repository with the exercise
+## Check-out the git repository of PRA_PLHS
 
 Once Miniconda is ready, checkout the course repository and proceed with setting up the environment:
 
@@ -24,7 +24,7 @@ git clone https://github.com/seungsab/PRA_PLHS.git
 Change directory (`cd`) into the course folder, then type:
 
 ```bash
-# mkdir PRA_PLHS && cd PRA_PLHS
+mkdir PRA_PLHS && cd PRA_PLHS
 conda env create -f environment.yml
 source activate PRA_PLHS
 ```
