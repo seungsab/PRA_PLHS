@@ -27,3 +27,4 @@ Just type:
 conda env create -f environment.yml
 source activate PRA_PLHS
 ```
+[Documents for VARS-TOOL](https://vars-tool.readthedocs.io/en/latest/index.html)
