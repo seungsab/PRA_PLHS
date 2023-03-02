@@ -21,10 +21,9 @@ git clone https://github.com/seungsab/PRA_PLHS.git
 
 ## Create isolated Anaconda environment
 
-Change directory (`cd`) into the course folder, then type:
+Just type:
 
 ```bash
-mkdir PRA_PLHS && cd PRA_PLHS
 conda env create -f environment.yml
 source activate PRA_PLHS
 ```
