@@ -235,8 +235,8 @@ def _knn(arr1: np.ndarray, arr2: np.ndarray, k: int) -> Tuple[np.ndarray, np.nda
     # print('indices :', indices)
     distances = np.sort(distances, 0) # original
     # print(distances)
-    # distances = distances[indices].reshape(arr1.shape[0], k) # ìˆ˜ì • by EEM 230611
-    # distances = np.take_along_axis(distances, indices, axis=0) # ìˆ˜ì • by EEM 230611
+    # distances = distances[indices].reshape(arr1.shape[0], k) # ?ˆ˜? • by EEM 230611
+    # distances = np.take_along_axis(distances, indices, axis=0) # ?ˆ˜? • by EEM 230611
 
     # reshaping the arrays
     indices = indices[0:k, :].T
@@ -574,7 +574,7 @@ def _greedy_plhs(
     return (plhs, plhs_slices, f_priori, f_posteriori)
 
 def plhs(sp: int, params: int, slices: int, seed: int=None, iterations: int=10, criterion: str='maximin') -> Tuple[np.ndarray, np.ndarray]:
-    # slhs í•¨ìˆ˜ë¥¼ ë³‘ë ¬ë¡œ ì‹¤í–‰í•˜ëŠ” ë°ì½”ë ˆì´í„°
+    # slhs ?•¨?ˆ˜ë¥? ë³‘ë ¬ë¡? ?‹¤?–‰?•˜?Š” ?°ì½”ë ˆ?´?„°
     @ray.remote
     def slhs_parallel(sp: int, params: int, slices: int, seed: int=None, iterations: int=20, criterion: str='maximin') -> Tuple[np.ndarray]:
         return slhs.remote(sp, params, slices, seed, iterations, criterion)
@@ -582,10 +582,10 @@ def plhs(sp: int, params: int, slices: int, seed: int=None, iterations: int=10, 
     def greedy_plhs_parallel(sp: int, slices: int, sample: np.array) -> Tuple[np.array, np.array, float, float]:
         return _greedy_plhs.remote(sp, slices, sample)
 
-    # ì‹œì‘ì ì„ ì„¤ì •í•˜ì—¬ ìµœì  ë¹„ìš© í•¨ìˆ˜ ì„ íƒ
+    # ?‹œ?‘? ?„ ?„¤? •?•˜?—¬ ìµœì  ë¹„ìš© ?•¨?ˆ˜ ?„ ?ƒ
     # f_best = 0
 
-    # ë³‘ë ¬ ì²˜ë¦¬ë¥¼ ìœ„í•´ ray ê°ì²´ ì‚¬ìš©
+    # ë³‘ë ¬ ì²˜ë¦¬ë¥? ?œ„?•´ ray ê°ì²´ ?‚¬?š©
     # ray_samples = []
     # ray_slices = []
     ray_slhs_dataset = []
@@ -594,13 +594,13 @@ def plhs(sp: int, params: int, slices: int, seed: int=None, iterations: int=10, 
             seed += 50
         ray_slhs_data = slhs_parallel.remote(sp, params, slices, seed, iterations, criterion)
         
-        # slhs í•¨ìˆ˜ë¥¼ ë³‘ë ¬ë¡œ ì‹¤í–‰í•˜ê³  ê²°ê³¼ë¥¼ ray ê°ì²´ì— ì €ì¥
+        # slhs ?•¨?ˆ˜ë¥? ë³‘ë ¬ë¡? ?‹¤?–‰?•˜ê³? ê²°ê³¼ë¥? ray ê°ì²´?— ????¥
         ray_slhs_dataset.append(ray_slhs_data)
     
     slhs_sample = np.array(ray.get(ray.get(ray_slhs_dataset)))
     
     ray_greedy_dataset = []
-    # ray ê°ì²´ ê²°ê³¼ë¥¼ ê°€ì ¸ì™€ì„œ ìµœì  ë¹„ìš© í•¨ìˆ˜ì— ëŒ€í•œ ìµœìƒì˜ ìƒ˜í”Œ ì„ íƒ
+    # ray ê°ì²´ ê²°ê³¼ë¥? ê°?? ¸????„œ ìµœì  ë¹„ìš© ?•¨?ˆ˜?— ????•œ ìµœìƒ?˜ ?ƒ˜?”Œ ?„ ?ƒ
     for i in range(iterations):
         # plhs_candidate, plhs_candidate_slices, _, f_candidate = greedy_plhs_parallel.remote(sp, slices, slhs_sample[i,:,:])
         ray_greedy_data = greedy_plhs_parallel.remote(sp, slices, slhs_sample[i,:,:])
@@ -621,7 +621,7 @@ import pickle
 import os
 
 n_rep, n_samples = 20, 10000
-n_slices = [50] # 25, 50, 100
+n_slices = [25] # 25, 50, 100
 
 for i in range(n_rep):
     rand_seed0 = 1111 * (i+1)
@@ -650,7 +650,7 @@ for i in range(n_rep):
 
         ## $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ ##
         ## Modified
-        os.chdir(r'.\testPLHS')
+        # os.chdir(r'.\testPLHS')
         ##
         ## $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ ##
 
@@ -703,11 +703,11 @@ for i in range(n_rep):
 
 # arr = np.array([5, 3, 8, 2, 6, 1])
 # print(arr)
-# # ë°°ì—´ì„ ì •ë ¬í•˜ì—¬ ì‘ì€ ìˆ˜ë¶€í„° ì‹œì‘í•˜ë„ë¡ íŒŒí‹°ì…˜
+# # ë°°ì—´?„ ? •? ¬?•˜?—¬ ?‘??? ?ˆ˜ë¶??„° ?‹œ?‘?•˜?„ë¡? ?ŒŒ?‹°?…˜
 # arr_partitioned = np.partition(arr, 2)
 # print(arr_partitioned)
 
-# # íŒŒí‹°ì…˜ëœ ë°°ì—´ì—ì„œ 3ë²ˆì§¸ë¡œ ì‘ì€ ê°’ì„ ì°¾ìŒ
+# # ?ŒŒ?‹°?…˜?œ ë°°ì—´?—?„œ 3ë²ˆì§¸ë¡? ?‘??? ê°’ì„ ì°¾ìŒ
 # third_smallest_value = np.min(arr_partitioned[:3])
 
 # print(third_smallest_value)  # ì¶œë ¥: 3
