@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sun Jun 11 16:13:50 2023
-
-@author: EEM
+Created on Sun Jun 11 16:13:50 2023 @author: EEM
+MOdified on Sun JAN 20 05:10 2024 @author: SSJin
 """
 # import numpy as np
 # import scipy as sp
@@ -618,23 +617,30 @@ def plhs(sp: int, params: int, slices: int, seed: int=None, iterations: int=10, 
 # ray.init()
 
 import pickle
-import os
+import json
 
-n_rep, n_samples = 20, 10000
-n_slices = [25] # 25, 50, 100
+with open('config.json') as f:
+    config = json.load(f)
+    
+n_rep = config['n_rep']
+n_samples = config['n_samples']
+n_slices = config['n_slices']
+rand_seed0 = config['rand_seed0']
+n_iter = config['n_iter']
+
+# n_rep, n_samples = 20, 10000
+# n_slices = [25] # 25, 50, 100
 
 for i in range(n_rep):
-    rand_seed0 = 1111 * (i+1)
+    rand_seed1 = rand_seed0 * (i+1)
     n_params = 20
 
     for n_slice in n_slices:
-        sub_dims = [1, 2]
         X = dict()
-
 
         s2_time = time.time()
         # Crieterion for optimizer:  maximin // correlation
-        X_temp = plhs(sp = n_samples, params=n_params, seed=rand_seed0, slices = n_slice, iterations = 100, criterion='maximin')
+        X_temp = plhs(sp = n_samples, params=n_params, seed=rand_seed1, slices = n_slice, iterations = n_iter, criterion='maximin')
         e2_time = time.time()
         print('time :',e2_time - s2_time)
 
@@ -644,7 +650,7 @@ for i in range(n_rep):
         # print(X_temp[0] == Y_temp[0])
         #%%
 
-        outfile = 'PLHS_data_' + str(rand_seed0) +'_' + str(n_slice) +'_' + str(n_samples) +'_' + str(n_params) +'.pkl'
+        outfile = 'PLHS_data_' + str(rand_seed1) +'_' + str(n_slice) +'_' + str(n_samples) +'_' + str(n_params) +'.pkl'
         print(outfile)
         #%%
 
