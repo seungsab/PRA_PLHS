@@ -617,40 +617,45 @@ def plhs(sp: int, params: int, slices: int, seed: int=None, iterations: int=10, 
 # ray.shutdown()
 # ray.init()
 
-test_num = 2**10 # No. of Total Numbers
-rand_seed0 = 1234
-n_slices = 5
-n_params, n_samples = 200, test_num*n_slices # n_params = 1700 이상
-sub_dims = [1, 2]
-X = dict()
-
-
-s2_time = time.time()
-# Crieterion for optimizer:  maximin // correlation
-X_temp = plhs(sp = n_samples, params=n_params, seed=rand_seed0, slices = n_slices, iterations = 200, criterion='maximin')
-e2_time = time.time()
-print('time :',e2_time - s2_time)
-
-
-# ray.shutdown()
-#%%
-# print(X_temp[0] == Y_temp[0])
-#%%
-
-outfile = 'PLHS_data_' + str(rand_seed0) +'_' + str(n_slices) +'_' + str(n_samples) +'_' + str(n_params) +'.pkl'
-print(outfile)
-#%%
 import pickle
 import os
 
-## $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ ##
-## Modified
-os.chdir(r'C:\Users\EEM\Desktop\220907_네트워크_리스크평가_코드\230610_NetFT_PLHS\testPLHS')
-##
-## $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ ##
+n_rep, n_samples = 20, 10000
+n_slices = [50] # 25, 50, 100
 
-with open(outfile,'wb') as file:
-    pickle.dump(X_temp,file)
+for i in range(n_rep):
+    rand_seed0 = 1111 * (i+1)
+    n_params = 20
+
+    for n_slice in n_slices:
+        sub_dims = [1, 2]
+        X = dict()
+
+
+        s2_time = time.time()
+        # Crieterion for optimizer:  maximin // correlation
+        X_temp = plhs(sp = n_samples, params=n_params, seed=rand_seed0, slices = n_slice, iterations = 100, criterion='maximin')
+        e2_time = time.time()
+        print('time :',e2_time - s2_time)
+
+
+        # ray.shutdown()
+        #%%
+        # print(X_temp[0] == Y_temp[0])
+        #%%
+
+        outfile = 'PLHS_data_' + str(rand_seed0) +'_' + str(n_slice) +'_' + str(n_samples) +'_' + str(n_params) +'.pkl'
+        print(outfile)
+        #%%
+
+        ## $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ ##
+        ## Modified
+        os.chdir(r'.\testPLHS')
+        ##
+        ## $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ ##
+
+        with open(outfile,'wb') as file:
+            pickle.dump(X_temp,file)
 
 
 
