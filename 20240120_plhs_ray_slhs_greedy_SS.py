@@ -627,13 +627,13 @@ n_samples = config['n_samples']
 n_slices = config['n_slices']
 rand_seed0 = config['rand_seed0']
 n_iter = config['n_iter']
+n_params = config['n_params']
 
 # n_rep, n_samples = 20, 10000
 # n_slices = [25] # 25, 50, 100
 
 for i in range(n_rep):
     rand_seed1 = rand_seed0 * (i+1)
-    n_params = 20
 
     for n_slice in n_slices:
         X = dict()
